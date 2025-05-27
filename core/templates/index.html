@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACME ATS • Home</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    /* --- hero like CodeSignal --- */
+    .hero{background:linear-gradient(135deg,#5522ff 0%,#6f84ff 100%);color:#fff;padding:6rem 0}
+    .hero h1{font-size:3rem;font-weight:700}
+    .hero p{font-size:1.25rem;margin-top:1rem;margin-bottom:2rem;max-width:640px}
+    .feature-icon{width:3rem;height:3rem;background:rgba(86,77,255,.15);border-radius:.75rem;display:inline-flex;align-items:center;justify-content:center;font-size:1.25rem}
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">ACME ATS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#careers">Careers</a></li>
+          <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+        </ul>
+        <div class="d-flex gap-2">
+          <!-- SINGLE login button (modal) -->
+          <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#loginModal">Log&nbsp;in</button>
+          <!-- signup variants stay dropdown -->
+          <div class="dropdown">
+            <button class="btn btn-warning dropdown-toggle" id="signupDropdown" data-bs-toggle="dropdown" aria-expanded="false">Sign&nbsp;up</button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="signupDropdown">
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signupModal" data-role="candidates">Candidate</a></li>
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signupModal" data-role="companies">Company</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero text-center">
+    <div class="container">
+      <h1>Hire smarter. Get hired faster.</h1>
+      <p>End‑to‑end talent acquisition & internal mobility platform deployable on your own servers.</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="#products" class="btn btn-light btn-lg px-4">Explore Products</a>
+        <button class="btn btn-outline-light btn-lg px-4" data-bs-toggle="modal" data-bs-target="#signupModal">Get Started</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES PLACEHOLDER -->
+  <section class="py-5" id="products">
+    <div class="container">
+      <div class="row text-center mb-4"><h2 class="fw-semibold">Core Modules</h2></div>
+      <div class="row g-4">
+        <div class="col-md-4 text-center"><div class="feature-icon mb-3"><span class="bi bi-kanban"></span></div><h5>ATS Pipeline</h5><p class="text-muted">Visual Kanban for requisitions, interviews & offers.</p></div>
+        <div class="col-md-4 text-center"><div class="feature-icon mb-3"><span class="bi bi-graph-up"></span></div><h5>Skill Assessments</h5><p class="text-muted">Coding & aptitude tests with proctoring.</p></div>
+        <div class="col-md-4 text-center"><div class="feature-icon mb-3"><span class="bi bi-people"></span></div><h5>Internal Job Board</h5><p class="text-muted">Employees discover openings & career paths.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-light py-3 mt-auto text-center"><small>&copy; <span id="year"></span> ACME ATS</small></footer>
+
+  <!-- YEAR & ROLE SYNC -->
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const loginModal = document.getElementById('loginModal');
+    if(loginModal){
+      const roleInput = loginModal.querySelector('input[name=role]');
+      loginModal.addEventListener('shown.bs.modal', ()=>{
+        const active = loginModal.querySelector('.nav-link.active');
+        roleInput.value = active.dataset.role;
+      });
+      loginModal.querySelectorAll('.nav-link').forEach(btn=>{
+        btn.addEventListener('shown.bs.tab', e=>{ roleInput.value = e.target.dataset.role; });
+      });
+    }
+  </script>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title">Log in</h5></div>
+        <div class="modal-body">
+          <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-role="candidates" data-bs-toggle="tab" data-bs-target="#loginCandidate" role="tab">Candidate</button></li>
+            <li class="nav-item"><button class="nav-link" data-role="companies" data-bs-toggle="tab" data-bs-target="#loginCompany" role="tab">Company</button></li>
+          </ul>
+          <div class="tab-content">
+            <!--  CANDIDATE  -->
+            <div class="tab-pane fade show active" id="loginCandidate" role="tabpanel">
+              <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="role" value="candidates" />
+                <div class="mb-3"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required></div>
+                <div class="mb-3"><label class="form-label">Password</label><input type="password" name="password" class="form-control" required></div>
+                <button class="btn btn-primary w-100">Log in</button>
+              </form>
+            </div>
+            <!--  COMPANY  -->
+            <div class="tab-pane fade" id="loginCompany" role="tabpanel">
+              <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="role" value="companies" />
+                <div class="mb-3"><label class="form-label">Company Email</label><input type="email" name="email" class="form-control" required></div>
+                <div class="mb-3"><label class="form-label">Company Code</label><input type="text" name="company_code" class="form-control" required></div>
+                <div class="mb-3"><label class="form-label">Password</label><input type="password" name="password" class="form-control" required></div>
+                <button class="btn btn-primary w-100">Log in</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGNUP MODAL (unchanged placeholder) -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title">Sign up</h5></div>
+        <div class="modal-body text-center text-muted">(Sign‑up flows coming soon)</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

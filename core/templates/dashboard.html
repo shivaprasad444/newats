@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+
+    {% if request.session.role == "candidates" %}
+    <!-- Side-nav (candidate only) -->
+    <nav class="col-md-2 d-none d-md-block bg-light vh-100 sidebar">
+      <div class="pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'jobs_applied' %}">Jobs Applied</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'interviews' %}">Interviews Scheduled</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'calendar' %}">Calendar</a></li>
+          <li class="nav-item"><a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+    {% endif %}
+
+    <!-- Main area -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+      {% if request.session.role == "candidates" %}
+      <form class="d-flex mb-4" method="get" action="#">
+        <input class="form-control me-2" type="search" placeholder="Search jobs" aria-label="Search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </form>
+      {% endif %}
+      <h2>Welcome, {{ request.user.first_name|default:request.user.username }}</h2>
+      <p class="text-muted">Use the sidebar to navigate.</p>
+    </main>
+
+  </div>
+</div>
+{% endblock %}
