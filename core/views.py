@@ -17,7 +17,8 @@ def products(request):
     return render(request, "products.html")
 
 
-# ---------- login ----------
+# ---------- login ----------    
+#new changes
 class LoginForm(forms.Form):
     email    = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
