@@ -10,7 +10,7 @@ class SplitLoginBackend(ModelBackend):
     """
     def authenticate(self, request, username=None, password=None, role=None, **kwargs):
         db_order = [role] if role in {"candidates", "companies"} else []
-        db_order.append("default")                      # always last
+        #db_order.append("default")                      # always last
 
         for db in db_order:
             try:

@@ -1,0 +1,33 @@
+/* candidate_signup.css */
+
+.candidate-signup-form .form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.candidate-signup-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.candidate-signup-form .form-group.half {
+  width: 50%;
+}
+
+.candidate-signup-form .full-width {
+  width: 100%;
+}
+
+.candidate-signup-form input[type="text"],
+.candidate-signup-form input[type="email"],
+.candidate-signup-form input[type="password"],
+.candidate-signup-form input[type="file"],
+.candidate-signup-form select {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 4px;
+}
