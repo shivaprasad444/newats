@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'widget_tweaks',
     
 ]
 
@@ -97,6 +98,18 @@ AUTHENTICATION_BACKENDS = [
     "core.auth_backends.SplitLoginBackend",          # first – tries role-specific DB
     "django.contrib.auth.backends.ModelBackend",     # fallback – keeps admin login working
 ]
+
+#---------Email services---------
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'shiva660p@gmail.com'         # your Gmail
+EMAIL_HOST_PASSWORD = 'trydjango'       # App Password, NOT your Gmail password
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

@@ -29,6 +29,11 @@ urlpatterns = [
     path("dashboard/jobs/", views.jobs_applied,name="jobs_applied"),
     path("dashboard/interviews/",views.interviews,name="interviews"),
     path("dashboard/calendar/", views.calendar,name="calendar"),
-    path("candidate/signup", views.candidate_signup_view, name="candidate-signup"),
-    path("company/signup", views.company_signup, name="company_signup")
+    path("candidate/signup/", views.candidate_signup_view, name="candidate-signup"),
+    path("company/signup/", views.company_signup, name="company_signup"),
+    path("job/<int:pk>/", views.job_detail_view, name="job_detail"),
+    path('candidate/timesheet/', views.candidate_timesheet_view, name='candidate_timesheet'),
+    path('contact/', views.contact_us_view, name='contact_us'),
+
+
 ]

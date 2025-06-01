@@ -142,6 +142,13 @@
       </div>
       <div class="modal-body">
   <div class="candidate-signup-form">
+       {% if messages %}
+  <ul class="alert alert-danger">
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+        </ul>
+      {% endif %}
     <form method="POST" enctype="multipart/form-data" action="{% url 'candidate-signup' %}">
       {% csrf_token %}
 

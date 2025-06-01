@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Candidate Timesheet</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .calendar-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .calendar-week {
+      display: flex;
+      justify-content: space-around;
+      background-color: #e0e7ff;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .calendar-day {
+      text-align: center;
+      flex-grow: 1;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .calendar-day.active {
+      background-color: #3b82f6;
+      color: white;
+    }
+    .form-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+    .entry-badge {
+      font-size: 0.85rem;
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+    .earn-regular {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+    .earn-overtime {
+      background-color: #fde68a;
+      color: #92400e;
+    }
+  </style>
+</head>
+<body>
+<div class="container py-4">
+
+  <!-- Top Bar with profile info -->
+  <div class="top-bar">
+    <h2 class="mb-0">🕒 Candidate Timesheet</h2>
+    <div>
+      <span class="me-3 fw-semibold">👤 {{ request.user.first_name }} {{ request.user.last_name }}</span>
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">🏠 Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Week Navigation -->
+  <form method="GET" class="mb-4">
+    <div class="calendar-nav">
+      <button type="submit" name="week" value="prev" class="btn btn-outline-primary">← Previous</button>
+      <div class="fw-bold">{{ week_start }} to {{ week_end }}</div>
+      <button type="submit" name="week" value="next" class="btn btn-outline-primary">Next →</button>
+    </div>
+  </form>
+
+  <!-- Timesheet Form -->
+  <div class="form-card mb-5">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label for="date">📅 Select Date</label>
+          {{ form.date }}
+        </div>
+        <div class="col-md-4">
+          <label for="earn_code">💰 Earn Code</label>
+          {{ form.earn_code }}
+        </div>
+        <div class="col-md-2">
+          <label for="start_time">🕘 Start</label>
+          {{ form.start_time }}
+        </div>
+        <div class="col-md-2">
+          <label for="end_time">🕔 End</label>
+          {{ form.end_time }}
+        </div>
+      </div>
+
+      <div class="mt-3 text-end">
+        <button type="submit" name="action" value="save" class="btn btn-primary">💾 Save</button>
+        <button type="submit" name="action" value="submit" class="btn btn-success ms-2">✅ Submit for Approval</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Timesheet Entries -->
+  {% if entries %}
+  <div class="form-card">
+    <h5 class="mb-3">📋 Entries This Week</h5>
+    <ul class="list-group">
+      {% for entry in entries %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ entry.date }}</strong> —
+            <span class="entry-badge {% if entry.earn_code == 'Regular Pay' %}earn-regular{% else %}earn-overtime{% endif %}">
+              {{ entry.earn_code }}
+            </span>
+            | {{ entry.start_time }} - {{ entry.end_time }} ({{ entry.hours }} hrs)
+          </div>
+          {% if entry.submitted %}
+            <span class="badge bg-success">Submitted</span>
+          {% else %}
+            <span class="badge bg-warning text-dark">Not Submitted</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+</div>
+</body>
+</html>
